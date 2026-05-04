@@ -1,0 +1,22 @@
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	llmCall(llmCall)
+	toolNode(toolNode)
+	guardrailNode(guardrailNode)
+	memoryRememberNode(memoryRememberNode)
+	summarizeConversation(summarizeConversation)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> guardrailNode;
+	memoryRememberNode --> llmCall;
+	summarizeConversation --> memoryRememberNode;
+	guardrailNode -.-> summarizeConversation;
+	guardrailNode -.-> memoryRememberNode;
+	guardrailNode -.-> __end__;
+	llmCall -.-> toolNode;
+	llmCall -.-> __end__;
+	toolNode -.-> llmCall;
+	toolNode -.-> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2;
+	classDef first fill-opacity:0;
+	classDef last fill:#bfb6fc;
