@@ -156,7 +156,7 @@ const mutation = useMutation({
           <DropdownMenuTrigger asChild>
             <SidebarMenuAction
               className={cn(
-                "opacity-0 group-hover/item:opacity-100 focus:opacity-100 hover:bg-[#2f2f2f] text-[#b4b4b4] data-[state=open]:opacity-100 transition-opacity mr-1",
+                "opacity-0 group-hover/item:opacity-100 focus:opacity-100 data-[state=open]:opacity-100 transition-opacity mr-1",
                 thread.id == "active" && "opacity-100",
               )}
             >
@@ -166,7 +166,7 @@ const mutation = useMutation({
           <DropdownMenuContent
             side="right"
             align="start"
-            className="bg-[#2f2f2f] border-[#424242] text-[#ececec] min-w-50 rounded-xl p-1.5 shadow-xl shadow-black/50"
+            className="min-w-50 rounded-xl p-1.5 shadow-xl shadow-black/50"
           >
             <DropdownMenuItem
               className="gap-3 px-3 py-2.5 rounded-md focus:bg-[#424242] focus:text-white cursor-pointer transition-colors"

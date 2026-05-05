@@ -10,20 +10,10 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { SessionUser } from "@/types";
 import { redirect } from "next/navigation";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
 
-import { ChevronDown, UserPlus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { StoreSync } from "@/store/store-sync";
-import { authClient } from "@/lib/auth-client";
-import { UpgradeComponent } from "@/components/upgrade-component";
-import { ModelSelectorComponent } from "@/components/model-selector";
+import Navbar from "@/components/navbar";
+
 
 export default async function ChatPageLayout({
   children,
@@ -46,7 +36,8 @@ export default async function ChatPageLayout({
       <SidebarProvider>
         {/* <AppSidebar /> */}
         <SidebarInset>
-          <div className="flex flex-col h-dvh  bg-[#212121] text-[#ececec]">
+          <div className="flex flex-col h-80%  text-[#ececec]">
+            <Navbar />
             {/* <header className="flex items-center justify-between px-4 py-3 h-15 shrink-0">
               <div className="flex md:hidden">
                 <SidebarTrigger />

@@ -25,7 +25,7 @@ function InputContainer() {
   const finalThreadId = urlThreadId || uuidv4();
 
   return (
-    <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6 bg-red">
+    <div className="flex flex-col items-center w-full max-w-200 mx-auto pb-6">
       <PromptInput
         className="w-full bg-white rounded-full shadow-[0_4px_24px_rgba(94,80,200,0.10)] border border-[#E8E6F8]"
         onSubmit={(message) => {
@@ -68,7 +68,7 @@ function InputContainer() {
 
             <button
               type="submit"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#5E50C8] text-white hover:bg-[#4A3CB8] transition-all shadow-[0_4px_12px_rgba(94,80,200,0.35)]"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-white hover:bg-[#4A3CB8] transition-all shadow-[0_4px_12px_rgba(94,80,200,0.35)]"
             >
               {input ? <ArrowUp size={20} /> : <AudioLines size={20} />}
             </button>

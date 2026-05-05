@@ -110,7 +110,7 @@ function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
       className={cn(
         // Background #2f2f2f is the signature ChatGPT dark mode color
         // rounded-[32px] creates the perfect capsule ends
-        "relative flex w-full items-center gap-1 bg-[#2f2f2f] px-2 py-2",
+        "relative flex w-full items-center gap-1 px-2 py-2",
         "rounded-[32px] border-none shadow-none transition-all outline-none",
         "focus-within:ring-0 focus-within:outline-none",
         "min-h-[52px] max-w-full overflow-hidden",

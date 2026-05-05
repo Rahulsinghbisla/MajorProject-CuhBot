@@ -42,7 +42,7 @@ export async function AppSidebar({
             />
           </div>
           <div className="group-data-[collapsible=icon]:hidden">
-            <SidebarTrigger className="hover:bg-[#2f2f2f] text-[#b4b4b4] h-8 w-8 transition-colors" />
+            <SidebarTrigger className="h-8 w-8 transition-colors" />
           </div>
         </div>
       </SidebarHeader>
@@ -63,7 +63,7 @@ export async function AppSidebar({
                 <SidebarMenuButton
                   tooltip={item.title}
                   className={cn(
-                    "h-9 transition-colors text-[#ececec] hover:bg-[#2f2f2f] data-[state=open]:bg-[#2f2f2f]",
+                    "h-9 transition-colors text-[#ececec]",
                     // Centering logic for collapsed state
                     "group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
                   )}

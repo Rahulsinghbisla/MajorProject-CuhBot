@@ -81,9 +81,9 @@ export function MessageRenderer({
                             className={`text-[1.05rem] leading-relaxed ${
                               message.role === "user"
                                 ? // USER: Purple gradient bubble matching UniBot send button
-                                  "bg-[#5E50C8] text-white px-5 py-3 rounded-2xl rounded-br-sm shadow-[0_4px_12px_rgba(94,80,200,0.25)]"
+                                  "bg-primary px-5 py-3 rounded-2xl"
                                 : // ASSISTANT: Clean white card with lavender border
-                                  "bg-white text-[#2D2B4E] px-5 py-3 rounded-2xl rounded-bl-sm border border-[#E8E6F8] shadow-[0_2px_8px_rgba(94,80,200,0.07)]"
+                                  "px-5 py-3 rounded-2xl rounded-bl-sm border"
                             }`}
                           >
                             {part.text}
@@ -96,7 +96,7 @@ export function MessageRenderer({
                                 onClick={() => regenerate()}
                                 label="Retry"
                               >
-                                <RefreshCcwIcon className="size-4 text-[#9B93D8] hover:text-[#5E50C8] transition-colors" />
+                                <RefreshCcwIcon className="size-4  transition-colors" />
                               </MessageAction>
                               <MessageAction
                                 onClick={() =>
@@ -104,7 +104,7 @@ export function MessageRenderer({
                                 }
                                 label="Copy"
                               >
-                                <CopyIcon className="size-4 text-[#9B93D8] hover:text-[#5E50C8] transition-colors" />
+                                <CopyIcon className="size-4 transition-colors" />
                               </MessageAction>
                             </MessageActions>
                           )}

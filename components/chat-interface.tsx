@@ -41,13 +41,13 @@ export const ChatInterfaceNew = ({
     return (
       <>
         {/* Empty State View */}
-        <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-y-scroll bg-[#F5F6FC]">
+        <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-y-scroll">
           <main className="h-full flex flex-col items-center justify-end md:justify-center max-w-4xl mx-auto w-full px-4 -mt-20">
             {/* UniBot branded empty state heading */}
-            <h1 className="text-3xl font-semibold mb-2 tracking-tight text-[#2D2B4E]">
+            <h1 className="text-3xl font-semibold mb-2 tracking-tight">
               Hello! 👋
             </h1>
-            <p className="text-[#9B93D8] text-base mb-8">
+            <p className="text-base mb-8">
               I'm UniBot — ask me anything about admissions, exams, or campus life.
             </p>
             <InputContainer />
@@ -59,7 +59,7 @@ export const ChatInterfaceNew = ({
     return (
       <>
         {/* Active Chat View */}
-        <div className="flex flex-col h-full w-full min-h-0 overflow-hidden bg-[#F5F6FC]">
+        <div className="flex flex-col h-full w-full min-h-0 overflow-hidden">
           <div className="flex-1 min-h-0 w-full relative">
             <Conversation className="h-full w-full">
               <ConversationContent className="max-w-200 mx-auto w-full px-4 pt-4">
@@ -76,7 +76,7 @@ export const ChatInterfaceNew = ({
           </div>
 
           {/* Fade from UniBot page background upward, so InputContainer floats cleanly */}
-          <div className="w-full bg-gradient-to-t from-[#F5F6FC] via-[#F5F6FC] to-transparent shrink-0">
+          <div className="w-full  to-transparent shrink-0">
             <div className="max-w-5xl mx-auto w-full px-4 pb-6 pt-6">
               <InputContainer />
             </div>
