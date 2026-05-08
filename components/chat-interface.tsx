@@ -43,12 +43,12 @@ export const ChatInterfaceNew = ({
         {/* Empty State View */}
         <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-y-scroll">
           <main className="h-full flex flex-col items-center justify-end md:justify-center max-w-4xl mx-auto w-full px-4 -mt-20">
-            {/* UniBot branded empty state heading */}
+            {/* ChatBot branded empty state heading */}
             <h1 className="text-3xl font-semibold mb-2 tracking-tight">
               Hello! 👋
             </h1>
             <p className="text-base mb-8">
-              I'm UniBot — ask me anything about admissions, exams, or campus life.
+              I'm ChatBot — ask me anything about admissions, exams, or campus life.
             </p>
             <InputContainer />
           </main>
@@ -75,7 +75,7 @@ export const ChatInterfaceNew = ({
             </Conversation>
           </div>
 
-          {/* Fade from UniBot page background upward, so InputContainer floats cleanly */}
+          {/* Fade from ChatBot page background upward, so InputContainer floats cleanly */}
           <div className="w-full  to-transparent shrink-0">
             <div className="max-w-5xl mx-auto w-full px-4 pb-6 pt-6">
               <InputContainer />

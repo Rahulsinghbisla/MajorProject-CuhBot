@@ -25,7 +25,7 @@ import {
   SourcesTrigger,
 } from "@/components/ai-elements/sources";
 import { UIMessage } from "ai";
-import { CopyIcon, RefreshCcwIcon } from "lucide-react";
+import { AlertCircle, CopyIcon, RefreshCcwIcon } from "lucide-react";
 import { SentimentMeter, SentimentMeterProps } from "./gen-ui/sentiment-meter";
 import { NewsCard, NewsCardProps } from "./gen-ui/news-card";
 import { CryptoPriceCard, CryptoPriceCardProps } from "./gen-ui/crypto-card";
@@ -78,13 +78,12 @@ export function MessageRenderer({
                       <Message key={`${message.id}-${i}`} from={message.role}>
                         <MessageContent>
                           <MessageResponse
-                            className={`text-[1.05rem] leading-relaxed ${
-                              message.role === "user"
-                                ? // USER: Purple gradient bubble matching UniBot send button
-                                  "bg-primary px-5 py-3 rounded-2xl"
+                            className={`text-[1.05rem] leading-relaxed ${message.role === "user"
+                                ? // USER: Purple gradient bubble matching ChatBot send button
+                                "bg-primary px-5 py-3 rounded-2xl text-secondary rounded-tl-sm "
                                 : // ASSISTANT: Clean white card with lavender border
-                                  "px-5 py-3 rounded-2xl rounded-bl-sm border"
-                            }`}
+                                "px-5 py-3 rounded-2xl rounded-bl-sm border"
+                              }`}
                           >
                             {part.text}
                           </MessageResponse>
@@ -162,7 +161,81 @@ export function MessageRenderer({
                             </div>
                           );
                         }
+                      case "get_mca_timetable":
+                        if (part.state === "input-streaming") {
+                          return (
+                            <div key={`${part.toolCallId}-${i}-loading`} className="text-sm text-blue-400 animate-pulse py-2 flex items-center gap-2">
+                              <div className="h-4 w-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                              Fetching MCA Timetable...
+                            </div>
+                          );
+                        }
+                        if (part.state === "output-available") {
+                          // Extract and parse the JSON schedule
+                          const toolOutput = (part.output as any).kwargs.content;
+                          const timetableData = JSON.parse(toolOutput);
 
+                          return (
+                            <div key={`${part.toolCallId}-${i}-output`} className="py-3 w-full max-w-sm">
+                              <TimetableCard {...timetableData} />
+                            </div>
+                          );
+                        }
+                        if (part.state === "output-error") {
+                          return (
+                            <div key={`${part.toolCallId}-${i}-error`} className="text-sm text-red-400 py-2">
+                              Error fetching schedule: {part.errorText}
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        }
+
+                      case "getStudentDetails": // Matches the exact name in your tool definition
+                        if (part.state === "input-streaming") {
+                          return (
+                            <div key={`${part.toolCallId}-${i}-loading`} className="text-sm text-emerald-400 animate-pulse py-2 flex items-center gap-2">
+                              <div className="h-4 w-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+                              Searching University Database...
+                            </div>
+                          );
+                        }
+
+                        if (part.state === "output-available") {
+                          // 1. Get the output (Vercel AI SDK sometimes returns objects directly, or JSON strings)
+                          const rawOutput = (part.output as any).kwargs.content;
+                          const response = typeof rawOutput === 'string' ? JSON.parse(rawOutput) : rawOutput;
+
+                          // 2. Handle the "Not Found" case using your success flag
+                          if (!response.success) {
+                            return (
+                              <div key={`${part.toolCallId}-${i}-error`} className="text-sm text-amber-400 py-3 flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4" />
+                                {response.message}
+                              </div>
+                            );
+                          }
+
+                          // 3. Map over the array to support multiple students (e.g. searching "Singh")
+                          return (
+                            <div key={`${part.toolCallId}-${i}-output`} className="py-3 w-full flex flex-wrap gap-4">
+                              {response.students.map((student: any) => (
+                                // Renders a card for EVERY student found in the array
+                                <StudentDetailsCard key={student.roll} {...student} />
+                              ))}
+                            </div>
+                          );
+                        }
+
+                        if (part.state === "output-error") {
+                          return (
+                            <div key={`${part.toolCallId}-${i}-error`} className="text-sm text-red-400 py-2">
+                              Critical Error: {part.errorText}
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        }
                       case "displayNews":
                         if (part.state === "input-streaming") {
                           return (
@@ -353,6 +426,8 @@ import {
   ProductCarouselProps,
 } from "./gen-ui/product-carousel";
 import { WeatherCard, WeatherCardProps } from "./gen-ui/weather-card";
+import { TimetableCard } from "./gen-ui/TimeTablecard";
+import { StudentDetailsCard } from "./gen-ui/StudentDetailsCard";
 
 export const GeneratingSpinner = () => {
   return (

@@ -1,14 +1,24 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   GraduationCap, FileText, Home, Bell, Send, Search 
 } from 'lucide-react';
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+ useEffect(() => {
+    // Only redirect if it has finished loading AND there is no session
+    if (!isPending && !session) {
+      router.push('/auth/signin');
+    }
+  }, [session, isPending, router]);
   return (
     <>
       {/* Hero Section */}
@@ -59,7 +69,7 @@ const ActionCard = ({ icon, title, desc }: { icon: React.ReactElement, title: st
   <Card className="group p-6 bg-gray-50/50 border border-gray-100 rounded-3xl hover:bg-white hover:shadow-xl hover:shadow-indigo-50 transition-all cursor-pointer flex flex-col h-full shadow-none">
     <CardHeader className="p-0 pb-0 flex-none">
       <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-indigo-600 mb-4 shadow-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-        {React.cloneElement(icon, { size: 24 })}
+        {React.cloneElement(icon)}
       </div>
       <CardTitle className="font-bold text-gray-900 text-base mb-2">{title}</CardTitle>
     </CardHeader>

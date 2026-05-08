@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
@@ -10,6 +10,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { v4 as uuidv4 } from "uuid";
 
 export default function DashboardLayout({
   children,
@@ -17,18 +18,22 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [threadId, setThreadId] = React.useState("");
+  useEffect(() => {
+    setThreadId(uuidv4());
+  }, []);
 
   // Navigation Configuration
   const navLinks = [
-    { icon: <Home size={20} />, label: "Home", href: "/dashboard" },
-    { icon: <MessageSquare size={20} />, label: "Ask a Question", href: "/chat" },
-    { icon: <GraduationCap size={20} />, label: "Academics", href: "/dashboard/academics" },
-    { icon: <FileText size={20} />, label: "Admissions", href: "/dashboard/admission" },
-    { icon: <MapPin size={20} />, label: "Campus Life", href: "/dashboard/campus" },
-    { icon: <FileText size={20} />, label: "Examinations", href: "/dashboard/examination" },
-    { icon: <Sparkles size={20} />, label: "Facilities", href: "/dashboard/facilities" },
-    { icon: <Bell size={20} />, label: "Notices & Events", href: "/dashboard/notice" },
-    { icon: <HelpCircle size={20} />, label: "FAQs", href: "/dashboard/faq" },
+    { icon: <Home size={20} />, label: "Home", href: "/" },
+    { icon: <MessageSquare size={20} />, label: "Ask a Question", href: `/chat/${threadId}` },
+    { icon: <GraduationCap size={20} />, label: "Academics", href: "/academics" },
+    { icon: <FileText size={20} />, label: "Admissions", href: "/admission" },
+    { icon: <MapPin size={20} />, label: "Campus Life", href: "/campus" },
+    { icon: <FileText size={20} />, label: "Examinations", href: "/examination" },
+    { icon: <Sparkles size={20} />, label: "Facilities", href: "/facilities" },
+    { icon: <Bell size={20} />, label: "Notices & Events", href: "/notice" },
+    { icon: <HelpCircle size={20} />, label: "FAQs", href: "/faq" },
   ];
 
   return (

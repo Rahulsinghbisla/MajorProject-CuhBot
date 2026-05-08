@@ -258,7 +258,7 @@ export default function AcademicsPage() {
           </div>
         </div>
 
-        {/* ── Ask UniBot Banner ── */}
+        {/* ── Ask ChatBot Banner ── */}
         <Card className="border-none bg-[#5E50C8] shadow-[0_4px_24px_rgba(94,80,200,0.35)] rounded-2xl overflow-hidden">
           <CardContent className="flex items-center justify-between p-5">
             <div className="flex items-center gap-4">
@@ -270,12 +270,12 @@ export default function AcademicsPage() {
                   Have a question about academics?
                 </p>
                 <p className="text-[#C4BEFF] text-xs mt-0.5">
-                  Ask UniBot — get instant answers about courses, departments & more
+                  Ask ChatBot — get instant answers about courses, departments & more
                 </p>
               </div>
             </div>
             <Button className="bg-white text-[#5E50C8] hover:bg-[#F0EEFF] font-semibold text-sm rounded-full px-5 shadow-none shrink-0">
-              Ask UniBot →
+              Ask ChatBot →
             </Button>
           </CardContent>
         </Card>

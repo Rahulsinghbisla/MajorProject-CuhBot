@@ -146,7 +146,7 @@ export default function ChatbotUserProfile() {
                         Plan
                       </span>
 
-                      <Badge className="rounded-xl">CodersGPT Pro</Badge>
+                      <Badge className="rounded-xl">CUHBot Pro</Badge>
                     </>
                   ) : (
                     <>

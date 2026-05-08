@@ -51,7 +51,7 @@ function InputContainer() {
             <PromptInputTextarea
               onChange={(e) => setInput(e.target.value)}
               value={input}
-              placeholder="Ask UniBot anything..."
+              placeholder="Ask ChatBot anything..."
               className="w-full flex items-center justify-center bg-transparent border-none focus:ring-0 focus-visible:ring-0 py-3 text-[16px] text-[#2D2B4E] placeholder:text-[#9B93D8] resize-none min-h-11 max-h-50 leading-tight"
             />
           </div>

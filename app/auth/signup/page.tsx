@@ -82,14 +82,14 @@ const SignUpPage = () => {
 
                         <div className="space-y-6">
                             <FeatureItem icon="💬" title="Get Instant Answers" desc="Ask anything about admissions, academics, and more." />
-                            <FeatureItem icon="📖" title="24/7 Available" desc="UniBot is always here to help you anytime, anywhere." />
+                            <FeatureItem icon="📖" title="24/7 Available" desc="ChatBot is always here to help you anytime, anywhere." />
                             <FeatureItem icon="🛡️" title="Reliable & Secure" desc="Your data is safe with us. We prioritize privacy." />
                         </div>
                     </div>
 
                     {/* Character Image Placeholder */}
                     {/* <div className="relative z-10 mt-auto flex justify-center">
-                        <img src="./images/bot.png" alt="UniBot Mascot" className="w-64 drop-shadow-2xl" />
+                        <img src="./images/bot.png" alt="ChatBot Mascot" className="w-64 drop-shadow-2xl" />
                     </div> */}
                 </div>
 
@@ -107,7 +107,7 @@ const SignUpPage = () => {
                             <div className="inline-flex p-4 bg-indigo-50 text-indigo-600 rounded-2xl mb-4">
                                 <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-2xl font-bold">U</div>
                             </div>
-                            <h2 className="text-3xl font-bold tracking-tight text-gray-900">Sign up to <span className="text-indigo-600">UniBot</span></h2>
+                            <h2 className="text-3xl font-bold tracking-tight text-gray-900">Sign up to <span className="text-indigo-600">ChatBot</span></h2>
                             <p className="text-sm text-gray-500">Create your account to access your assistant</p>
                         </div>
 

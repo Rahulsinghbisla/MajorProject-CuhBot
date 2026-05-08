@@ -331,7 +331,64 @@ export const productsTool = tool(
   }
 );
 
+
+// 2. The Tool Definition
+export const studentDetailsTool = tool(
+  async ({ queryType, queryValue }) => {
+    console.log(`STUDENT TOOL CALLED - Type: ${queryType}, Value: ${queryValue}`);
+    
+    try {
+      // Initialize an array to hold the matched students
+      let results: string | any[] = [];
+      console.log("Searching in students database...");
+
+      // Search logic based on whether the LLM extracted a name or a roll number
+      if (queryType === "roll") {
+        // Exact match for roll number (case insensitive)
+        results = studentsDatabase.filter(
+          (student) => student.roll.toLowerCase() === queryValue.toLowerCase()
+        );
+      } else if (queryType === "name") {
+        // Partial match for student name (case insensitive)
+        results = studentsDatabase.filter(
+          (student) => student.student_name.toLowerCase().includes(queryValue.toLowerCase())
+        );
+      }
+
+      // Handle no results found
+      if (results.length === 0) {
+        return { 
+          success: false, 
+          message: `No student found with ${queryType} matching '${queryValue}'.` 
+        };
+      }
+
+      // Return the found student(s)
+      return {
+        success: true,
+        count: results.length,
+        students: results,
+      };
+
+    } catch (error: any) {
+      console.error("Error fetching student details:", error);
+      return { success: false, error: "Failed to load student details." };
+    }
+  },
+  {
+    name: "getStudentDetails",
+    description: "Search and retrieve a student's academic and administrative details. This includes their pending fees, library books issued, exam marks, and assignment marks. Always call this tool when a user asks about a specific student's information, grades, fees, or library dues.",
+    schema: z.object({
+      queryType: z.enum(["name", "roll"]).describe("Whether the user is searching by the student's name or their roll number."),
+      queryValue: z.string().describe("The actual name or roll number to search for. e.g., 'Aarav Sharma' or 'CS202601'."),
+    }),
+  }
+);
+
+
+
 import { getStore } from "@/lib/store";
+import { cuhFacilitiesData, cuhLocations, mcaFourthSemSchedule, studentsDatabase } from "./Data";
 const store = await getStore()
 
 export const searchMemoryTool = tool(
@@ -361,6 +418,139 @@ export const searchMemoryTool = tool(
 );
 
 
+
+export const getMcaTimetableTool = tool(
+  async ({ day, time }) => {
+    const normalizedDay = day.charAt(0).toUpperCase() + day.slice(1).toLowerCase();
+
+    // 1. Handle Weekend/Empty Days
+    if (!mcaFourthSemSchedule[normalizedDay]) {
+      return JSON.stringify({
+        day: normalizedDay,
+        schedule: []
+      });
+    }
+
+    const dailySchedule = mcaFourthSemSchedule[normalizedDay];
+
+    // 2. Helper function to format the data into the UI Component's shape
+    const createSessionObject = (timeKey: string, subject: string) => {
+      // Creates a range like "09:00 - 10:00"
+      const startHour = parseInt(timeKey.split(':')[0], 10);
+      const endHour = startHour + 1;
+      const timeRange = `${startHour.toString().padStart(2, '0')}:00 - ${endHour.toString().padStart(2, '0')}:00`;
+      
+      return {
+        time: timeRange,
+        subject: subject,
+        isBreak: subject.toLowerCase() === "lunch"
+      };
+    };
+
+    // 3. If no specific time is asked, return the ENTIRE day's timetable
+    if (!time) {
+      const scheduleArray = Object.entries(dailySchedule).map(([timeKey, subject]) => {
+        return createSessionObject(timeKey, subject);
+      });
+
+      return JSON.stringify({
+        day: normalizedDay,
+        schedule: scheduleArray
+      });
+    }
+
+    // 4. Extract just the hour for a specific time query
+    const hourPrefix = time.split(":")[0];
+    const normalizedTimeKey = `${hourPrefix}:00`;
+    const scheduledClass = dailySchedule[normalizedTimeKey];
+
+    // 5. Return a single class if a specific time was requested
+    if (scheduledClass) {
+      return JSON.stringify({
+        day: normalizedDay,
+        schedule: [createSessionObject(normalizedTimeKey, scheduledClass)]
+      });
+    } else {
+      // Time is outside of campus hours
+      return JSON.stringify({
+        day: normalizedDay,
+        schedule: []
+      });
+    }
+  },
+  {
+    name: "get_mca_timetable",
+    description: "Fetches the MCA 4th Semester class schedule. Returns a JSON string formatted for the UI. If no time is provided, it returns the whole day's schedule.",
+    schema: z.object({
+      day: z.enum(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
+        .describe("The day of the week the user is asking about."),
+      time: z.string().optional()
+        .describe("Optional. The requested time in 24-hour format (e.g., '09:00', '14:00'). Convert AM/PM to 24-hour time before calling.")
+    }),
+  }
+);
+
+
+export const getBusLocationTool = tool(
+  async () => {
+    // 1. Generate a random index based on the length of the locations array
+    const randomIndex = Math.floor(Math.random() * cuhLocations.length);
+    
+    // 2. Fetch the random location
+    const currentLocation = cuhLocations[randomIndex];
+
+    // 3. Format the location slightly for better readability (capitalizing if needed)
+    const formattedLocation = currentLocation.charAt(0).toUpperCase() + currentLocation.slice(1);
+
+    // 4. Return the string to the LLM
+    return `The live location of the CUH campus bus is currently near: ${formattedLocation}.`;
+  },
+  {
+    name: "get_bus_location",
+    description: "Fetches the real-time, live location of the CUH university campus bus. Use this tool whenever the user asks 'where is the bus', 'track the bus', or asks for the bus location.",
+    // We use an empty object schema because the LLM doesn't need to extract any parameters from the user to check the bus.
+    schema: z.object({}), 
+  }
+);
+
+export const getCuhFacilitiesTool = tool(
+  async ({ facility_category }) => {
+    // If the LLM asks for 'all', we combine all the data into one big summary
+    if (facility_category === "all") {
+      const allFacilities = Object.values(cuhFacilitiesData).join("\n- ");
+      return `Here is an overview of the facilities at Central University of Haryana (CUH):\n- ${allFacilities}`;
+    }
+
+    // Fetch the specific category requested
+    const facilityInfo = cuhFacilitiesData[facility_category];
+
+    if (facilityInfo) {
+      return facilityInfo;
+    } else {
+      // Fallback if the LLM passes an unrecognized category
+      return `I couldn't find specific details for "${facility_category}". However, CUH generally provides Hostels, a Central Library, a Dispensary, Transport (Buses), Wi-Fi, and a Cafeteria. Ask about any of these specifically!`;
+    }
+  },
+  {
+    name: "get_cuh_facilities",
+    description: "Fetches detailed information about the facilities available at the Central University of Haryana (CUH), Jant-Pali, Mahendergarh. Use this when the user asks about hostels, library, food, transport, medical, or general campus amenities.",
+    schema: z.object({
+      facility_category: z.enum([
+        "hostel", 
+        "library", 
+        "medical", 
+        "transport", 
+        "food", 
+        "it_infrastructure", 
+        "sports", 
+        "admin", 
+        "general", 
+        "all"
+      ]).describe("The category of the facility the user is asking about. Use 'all' if the user asks for a general overview of all facilities.")
+    }),
+  }
+);
+
 export const toolsByName = {
   [newsTool.name]: newsTool,
   [sentimentTool.name]: sentimentTool,
@@ -369,6 +559,10 @@ export const toolsByName = {
   [weatherTool.name]: weatherTool,
   [productsTool.name]: productsTool,
   [searchMemoryTool.name]: searchMemoryTool,
+  [studentDetailsTool.name]: studentDetailsTool,
+  [getMcaTimetableTool.name]: getMcaTimetableTool,
+  [getBusLocationTool.name]: getBusLocationTool,
+  [getCuhFacilitiesTool.name]: getCuhFacilitiesTool,
 };
 
 export type ToolName = keyof typeof toolsByName;
@@ -382,6 +576,8 @@ export const UI_TOOL_NAMES = [
   "displayCryptoSentiment",
   "displayWeather",
   "displayProducts",
+  "get_mca_timetable",
+  "getStudentDetails",
 ];
 
 

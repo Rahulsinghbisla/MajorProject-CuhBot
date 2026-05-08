@@ -15,15 +15,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const TITLE = "CodersGPT";
+const TITLE = "CUHBot";
 const DESCRIPTION = "chatbot for coders";
-const BASE_URL = "https://codersgpt.vercel.app";
+const BASE_URL = "https://CUHBot.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: TITLE,
   description: DESCRIPTION,
-  keywords: "CodersGPT,codersgpt",
+  keywords: "CUHBot,CUHBot",
   authors: [
     {
       name: "codersgyan",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     url: BASE_URL,
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "CodersGPT",
+    siteName: "CUHBot",
     images: [
       {
         url: `${BASE_URL}/og.jpg`,
@@ -72,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

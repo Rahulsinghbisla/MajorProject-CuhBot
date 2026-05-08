@@ -97,10 +97,10 @@ const mutation = useMutation({
               <SidebarMenuButton
                 className={cn(
                   "h-9 rounded-lg transition-all px-3 pr-10 cursor-pointer",
-                  "hover:bg-transparent",
+                  "",
                 )}
               >
-                <Skeleton className="w-full h-full bg-[#212121]" />
+                <Skeleton className="w-full h-full" />
               </SidebarMenuButton>
             </SidebarMenuItem>
           );
@@ -131,9 +131,9 @@ const mutation = useMutation({
             isActive={thread.id == "active"}
             className={cn(
               "h-9 rounded-lg transition-all px-3 pr-10 cursor-pointer",
-              thread.id == "active"
-                ? "bg-[#212121] text-white"
-                : "hover:bg-[#212121] text-[#ececec] hover:text-white",
+              // thread.id == "active"
+              //   ? "bg-[#212121] text-white"
+              //   : "hover:bg-[#212121] text-[#ececec] hover:text-white",
             )}
           >
             {mutation.isPending && mutation.variables == thread.id && (
