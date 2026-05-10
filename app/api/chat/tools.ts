@@ -3,6 +3,10 @@ import { getJson } from "serpapi";
 import { tool } from "@langchain/core/tools";
 
 import { delay } from "@/lib/utils";
+import { getStore } from "@/lib/store";
+import { cuhFacilitiesData, cuhLocations, mcaFourthSemSchedule, studentsDatabase } from "./Data";
+import { getAllStudents } from "@/utilityFunctions/fetchStudentDetails";
+const store = await getStore()
 
 export const cryptoPriceTool = tool(
   async ({ symbol }) => {
@@ -338,58 +342,51 @@ export const studentDetailsTool = tool(
     console.log(`STUDENT TOOL CALLED - Type: ${queryType}, Value: ${queryValue}`);
     
     try {
-      // Initialize an array to hold the matched students
-      let results: string | any[] = [];
-      console.log("Searching in students database...");
-
-      // Search logic based on whether the LLM extracted a name or a roll number
+      console.log("Fetching all students from database...");
+      
+      // 1. Call your database function
+      const allStudents = await getAllStudents();
+      
+      let matchedStudent = null;
       if (queryType === "roll") {
-        // Exact match for roll number (case insensitive)
-        results = studentsDatabase.filter(
+        matchedStudent = allStudents.find(
           (student) => student.roll.toLowerCase() === queryValue.toLowerCase()
         );
       } else if (queryType === "name") {
-        // Partial match for student name (case insensitive)
-        results = studentsDatabase.filter(
-          (student) => student.student_name.toLowerCase().includes(queryValue.toLowerCase())
+        matchedStudent = allStudents.find(
+          (student) => student.studentName.toLowerCase().includes(queryValue.toLowerCase())
         );
       }
+      console.log("Student are : ",matchedStudent)
 
-      // Handle no results found
-      if (results.length === 0) {
+      // 3. Handle no results found
+      if (!matchedStudent) {
         return { 
           success: false, 
           message: `No student found with ${queryType} matching '${queryValue}'.` 
         };
       }
 
-      // Return the found student(s)
+      // 4. Return the single found student
       return {
         success: true,
-        count: results.length,
-        students: results,
+        student: matchedStudent, // Returning a single object instead of an array
       };
 
     } catch (error: any) {
-      console.error("Error fetching student details:", error);
+      console.error("Error fetching student details in tool:", error);
       return { success: false, error: "Failed to load student details." };
     }
   },
   {
     name: "getStudentDetails",
-    description: "Search and retrieve a student's academic and administrative details. This includes their pending fees, library books issued, exam marks, and assignment marks. Always call this tool when a user asks about a specific student's information, grades, fees, or library dues.",
+    description: "Search and retrieve a single student's academic and administrative details. This includes their pending fees, library books issued, exam marks, and assignment marks. Always call this tool when a user asks about a specific student's information, grades, fees, or library dues.",
     schema: z.object({
       queryType: z.enum(["name", "roll"]).describe("Whether the user is searching by the student's name or their roll number."),
-      queryValue: z.string().describe("The actual name or roll number to search for. e.g., 'Aarav Sharma' or 'CS202601'."),
+      queryValue: z.string().describe("The actual name or roll number to search for. e.g., 'Rahul Singh' or '240480'."),
     }),
   }
 );
-
-
-
-import { getStore } from "@/lib/store";
-import { cuhFacilitiesData, cuhLocations, mcaFourthSemSchedule, studentsDatabase } from "./Data";
-const store = await getStore()
 
 export const searchMemoryTool = tool(
   async ({ query }, config) => {

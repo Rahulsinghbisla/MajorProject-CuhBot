@@ -79,10 +79,10 @@ export function MessageRenderer({
                         <MessageContent>
                           <MessageResponse
                             className={`text-[1.05rem] leading-relaxed ${message.role === "user"
-                                ? // USER: Purple gradient bubble matching ChatBot send button
-                                "bg-primary px-5 py-3 rounded-2xl text-secondary rounded-tl-sm "
-                                : // ASSISTANT: Clean white card with lavender border
-                                "px-5 py-3 rounded-2xl rounded-bl-sm border"
+                              ? // USER: Purple gradient bubble matching ChatBot send button
+                              "bg-primary px-5 py-3 rounded-2xl text-secondary rounded-tl-sm "
+                              : // ASSISTANT: Clean white card with lavender border
+                              "px-5 py-3 rounded-2xl rounded-bl-sm border"
                               }`}
                           >
                             {part.text}
@@ -216,13 +216,12 @@ export function MessageRenderer({
                             );
                           }
 
-                          // 3. Map over the array to support multiple students (e.g. searching "Singh")
+                          // 3. Render the SINGLE student object directly (No .map() needed!)
+                          const student = response.student;
+
                           return (
                             <div key={`${part.toolCallId}-${i}-output`} className="py-3 w-full flex flex-wrap gap-4">
-                              {response.students.map((student: any) => (
-                                // Renders a card for EVERY student found in the array
-                                <StudentDetailsCard key={student.roll} {...student} />
-                              ))}
+                              <StudentDetailsCard key={student.roll} {...student} />
                             </div>
                           );
                         }

@@ -15,6 +15,13 @@
       "when": 1771531938003,
       "tag": "0001_free_ultimo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778407993550,
+      "tag": "0002_massive_cable",
+      "breakpoints": true
     }
   ]
 }

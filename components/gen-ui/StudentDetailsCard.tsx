@@ -1,28 +1,32 @@
 import React from 'react';
 import { User, Hash, GraduationCap, WalletCards, BookMarked, FileText, Calendar, CheckCircle2, AlertCircle } from 'lucide-react';
 
-// 1. Exact interface matching your new database structure
+// 1. Updated interface to match Drizzle's camelCase output
 export interface StudentDetailsProps {
   roll: string;
-  student_name: string;
-  pending_fee: number;
-  book_issued_date: string | null;
-  book_issued_due_date: string | null;
-  no_of_book_issued: number;
-  students_marks_obtain: number;
-  assignment_marks: number;
+  studentName: string;         // changed from student_name
+  pendingFee: number;          // changed from pending_fee
+  bookIssuedDate: string | null;    // changed from book_issued_date
+  bookIssuedDueDate: string | null; // changed from book_issued_due_date
+  noOfBookIssued: number;      // changed from no_of_book_issued
+  studentsMarksObtain: number; // changed from students_marks_obtain
+  assignmentMarks: number;     // changed from assignment_marks
+  // You can optionally add createdAt/updatedAt here if you ever want to show them
 }
 
 export function StudentDetailsCard(props: StudentDetailsProps) {
+  // 2. Destructure using the new camelCase names
   const {
-    roll, student_name, pending_fee, 
-    book_issued_date, book_issued_due_date, no_of_book_issued, 
-    students_marks_obtain, assignment_marks
+    roll, studentName, pendingFee, 
+    bookIssuedDate, bookIssuedDueDate, noOfBookIssued, 
+    studentsMarksObtain, assignmentMarks
   } = props;
 
-  const hasPendingDues = pending_fee > 0;
-  const hasBooks = no_of_book_issued > 0;
-  const totalMarks = students_marks_obtain + assignment_marks;
+  // 3. Update the logic checks
+  const hasPendingDues = pendingFee > 0;
+  const hasBooks = noOfBookIssued > 0;
+  // Total marks calculation (if you want to use it later)
+  const totalMarks = studentsMarksObtain + assignmentMarks;
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-lg flex flex-col gap-5 font-sans min-w-[320px]">
@@ -33,7 +37,8 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
           <User className="w-7 h-7 text-emerald-600" />
         </div>
         <div>
-          <h3 className="text-slate-800 font-bold text-xl uppercase tracking-wide">{student_name}</h3>
+          {/* Updated variable name here */}
+          <h3 className="text-slate-800 font-bold text-xl uppercase tracking-wide">{studentName}</h3>
           <p className="text-slate-500 text-sm flex items-center gap-1.5 font-medium mt-0.5">
             <Hash className="w-3.5 h-3.5" /> Roll: {roll}
           </p>
@@ -47,7 +52,8 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
             <GraduationCap className="w-4 h-4 text-blue-600" />
             <span className="text-xs font-semibold uppercase tracking-wider">Exam</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800">{students_marks_obtain}</div>
+          {/* Updated variable name here */}
+          <div className="text-2xl font-bold text-slate-800">{studentsMarksObtain}</div>
         </div>
         
         <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
@@ -55,7 +61,8 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
             <FileText className="w-4 h-4 text-indigo-600" />
             <span className="text-xs font-semibold uppercase tracking-wider">Assignment</span>
           </div>
-          <div className="text-2xl font-bold text-slate-800">{assignment_marks}</div>
+          {/* Updated variable name here */}
+          <div className="text-2xl font-bold text-slate-800">{assignmentMarks}</div>
         </div>
       </div>
 
@@ -69,7 +76,8 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
             <span className="text-sm font-medium text-slate-700">Pending Fees</span>
           </div>
           <div className={`font-bold ${hasPendingDues ? 'text-red-600' : 'text-emerald-600'}`}>
-            {hasPendingDues ? `₹${pending_fee}` : 'Cleared'}
+            {/* Updated variable name here */}
+            {hasPendingDues ? `₹${pendingFee}` : 'Cleared'}
           </div>
         </div>
 
@@ -81,7 +89,8 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Library Account</span>
              </div>
              <span className="text-xs font-bold text-slate-700 bg-slate-200 px-2 py-1 rounded-md">
-               {no_of_book_issued} {no_of_book_issued === 1 ? 'Book' : 'Books'}
+               {/* Updated variable name here */}
+               {noOfBookIssued} {noOfBookIssued === 1 ? 'Book' : 'Books'}
              </span>
           </div>
           
@@ -89,11 +98,13 @@ export function StudentDetailsCard(props: StudentDetailsProps) {
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex items-center justify-between text-slate-500">
                 <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5"/> Issued:</span>
-                <span className="text-slate-700">{book_issued_date}</span>
+                {/* Updated variable name here */}
+                <span className="text-slate-700">{bookIssuedDate}</span>
               </div>
               <div className="flex items-center justify-between text-amber-600 font-medium">
                 <span className="flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5"/> Due Date:</span>
-                <span>{book_issued_due_date}</span>
+                {/* Updated variable name here */}
+                <span>{bookIssuedDueDate}</span>
               </div>
             </div>
           ) : (
