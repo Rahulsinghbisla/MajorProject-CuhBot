@@ -19,6 +19,7 @@ const polarClient = new Polar({
 
 import { db } from "@/db";
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL!,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema:schema,
@@ -31,7 +32,7 @@ export const auth = betterAuth({
       accessType: "offline",
       prompt: "select_account consent",
       clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
   plugins: [
