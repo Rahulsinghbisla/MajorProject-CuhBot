@@ -24,7 +24,7 @@ export async function addStudentData({data}: {data: StudentData}) {
       studentsMarksObtain: data.studentsMarksObtain,
       assignmentMarks: data.assignmentMarks
     })
-    .returning(); // .returning() asks Postgres to send back the row it just created
+    .returning();
 
     console.log("Successfully inserted:", insertedStudent);
     return insertedStudent;
